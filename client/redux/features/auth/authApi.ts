@@ -31,6 +31,7 @@ export const authApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        // Activatate user
         activation: builder.mutation({
             query: ({ activation_token, activation_code }) => ({
                 url: "activate-user"
@@ -41,6 +42,7 @@ export const authApi = apiSlice.injectEndpoints({
                 }
             })
         }),
+        // Login
         login: builder.mutation({
             query: ({ email, password }) => ({
                 url: "login",
@@ -49,7 +51,7 @@ export const authApi = apiSlice.injectEndpoints({
                     email,
                     password
                 },
-                credentials: "include" as const
+                credentials: "include" as const,
             }),
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
                 try {
@@ -57,7 +59,7 @@ export const authApi = apiSlice.injectEndpoints({
                     dispatch(
                         userLoggedIn({
                             accessToken: result.data.accessToken,
-                            user: result.data.user
+                            user: result.data.user,
                         })
                     )
                 } catch (error: any) {
@@ -65,6 +67,7 @@ export const authApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        // Social Auth like goole or github
         socialAuth: builder.mutation({
             query: ({ email, name, avatar }) => ({
                 url: "social-auth",
@@ -72,7 +75,7 @@ export const authApi = apiSlice.injectEndpoints({
                 body: {
                     email,
                     name,
-                    avatar
+                    avatar,
                 },
                 credentials: "include" as const
             }),
@@ -82,12 +85,12 @@ export const authApi = apiSlice.injectEndpoints({
                     dispatch(
                         userLoggedIn({
                             accessToken: result.data.accessToken,
-                            user: result.data.user
+                            user: result.data.user,
                         })
-                    )
+                    );
                 } catch (error: any) {
-                    console.log(error)
-                }
+                    console.log(error);
+                };
             }
         }),
         logout: builder.query({

@@ -15,7 +15,7 @@ import { signIn } from "next-auth/react";
 
 type Props = {
     setRoute: (route: string) => void;
-    //setOpen: (open: boolean) => void;
+    setOpen: (open: boolean) => void;
     //refetch: any;
 };
 
@@ -24,39 +24,40 @@ const schema = Yup.object().shape({
     password: Yup.string().required("Please enter your password!").min(6),
 });
 
-const Login: FC<Props> = ({ setRoute }) => {
+const Login: FC<Props> = ({ setRoute, setOpen }) => {
     const [show, setShow] = useState(false);
-    //const [login, { isSuccess, error }] = useLoginMutation();
+    const [login, { isSuccess, error }] = useLoginMutation();
 
     const formik = useFormik({
         initialValues: { email: "", password: "" },
         validationSchema: schema,
         onSubmit: async ({ email, password }) => {
-            //await login({ email, password });
-            console.log(email, password);
+            await login({ email, password });
         },
     });
 
-    //   useEffect(() => {
-    //     if (isSuccess) {
-    //       toast.success("Login successfully");
-    //       setOpen(false);
-    //       refetch();
-    //     }
-    //     if (error) {
-    //       if ("data" in error) {
-    //         const errorData = error as any;
-    //         toast.error(errorData.data.message);
-    //       }
-    //     }
-    //   }, [isSuccess, error]);
+      useEffect(() => {
+        if (isSuccess) {
+          toast.success("Login successfully");
+          setOpen(false);
+          //refetch();
+        }
+        if (error) {
+          if ("data" in error) {
+            const errorData = error as any;
+            toast.error(errorData.data.message);
+          }
+        }
+      }, [isSuccess, error]);
 
     const { errors, touched, values, handleChange, handleSubmit } = formik;
 
     return (
+        // Login template
         <div className="w-full">
             <h1 className={`${styles.title}`}>Login With Kuzsera</h1>
             <form onSubmit={handleSubmit}>
+                {/* EMAIL */}
                 <label className={`${styles.label}`} htmlFor="email">
                     Enter your Email
                 </label>
@@ -72,6 +73,7 @@ const Login: FC<Props> = ({ setRoute }) => {
                 {errors.email && touched.email && (
                     <span className="text-red-500 pt-3 block">{errors.email}</span>
                 )}
+                {/* PASSWORD */}
                 <div className="w-full mt-5 relative mb-1">
                     <label className={`${styles.label}`} htmlFor="email">
                         Enter your password
@@ -102,6 +104,7 @@ const Login: FC<Props> = ({ setRoute }) => {
                 {errors.password && touched.password && (
                     <span className="text-red-500 pt-3 block">{errors.password}</span>
                 )}
+                {/* BUTTON */}
                 <div className="w-full mt-5">
                     <input
                         type="submit"
@@ -109,6 +112,7 @@ const Login: FC<Props> = ({ setRoute }) => {
                         className={`${styles.button}`} />
                 </div>
                 <br />
+                {/* GG AND GITHUB */}
                 <h5 className="text-center pt-4 font-Poopins text-[14px] text-black dark:text-white">
                     Or join with
                 </h5>
@@ -124,6 +128,7 @@ const Login: FC<Props> = ({ setRoute }) => {
                     onClick={() => signIn("github")}
                     />
                 </div>
+                {/* GO TO SIGN UP */}
                 <h5 className="text-center pt-4 font-Poppins text-[14px] ">
                     Not have any accout?
                     <span

@@ -8,7 +8,12 @@ import CustomModal from "../utils/CustomModal";
 import Login from "../components/Auth/Login"
 import SignUp from "../components/Auth/Signup";
 import Verification from "../components/Auth/Verification";
-
+import { useSelector } from "react-redux";
+import Image from "next/image";     
+import avatar from "../../public/assets/avatar.png";
+import { useSession } from "next-auth/react";
+import { useSocialAuthMutation } from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
 
 type Props = {
     open: boolean;
@@ -21,7 +26,58 @@ type Props = {
 const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
     const [active, setActive] = useState(false);
     const [openSidebar, setOpenSidebar] = useState(false);
+    const { user } = useSelector((state: any) => state.auth);
+    const {data} = useSession();
+    // const {
+    //     data: userData,
+    //     isLoading,
+    //     refetch,
+    //   } = useLoadUserQuery(undefined, { refetchOnMountOrArgChange: true });
+    //   const { data } = useSession();
+    const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
+    //   const [logout, setLogout] = useState(false);
+    //   const {} = useLogoutQuery(undefined, {
+    //     skip: !logout ? true : false,
+    //   });
+    
+      useEffect(() => {
+       
+          if (!user) {
+            if (data) {
+              socialAuth({
+                email: data?.user?.email,
+                name: data?.user?.name,
+                avatar: data?.user?.image,
+              });
+            }
+          }if (isSuccess) {
+                toast.success("Login successfully");
+            }
+        },[data, user]);
 
+    //   useEffect(() => {
+    //     if (!isLoading) {
+    //       if (!userData) {
+    //         if (data) {
+    //           socialAuth({
+    //             email: data?.user?.email,
+    //             name: data?.user?.name,
+    //             avatar: data?.user?.image,
+    //           });
+    //           refetch();
+    //         }
+    //       }
+    //       if (data === null) {
+    //         if (isSuccess) {
+    //           toast.success("Login successfully");
+    //         }
+    //       }
+    //       if (data === null && !isLoading && !userData) {
+    //         setLogout(true);
+    //       }
+    //     }
+    //   }, [data, userData, isLoading]);
+    console.log(data);
     if (typeof window !== "undefined") {
         window.addEventListener("scroll", () => {
             if (window.scrollY > 80) {
@@ -68,11 +124,29 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                                     onClick={() => setOpenSidebar(true)}
                                 />
                             </div>
-                            <HiOutlineUserCircle
-                                size={24}
-                                className="hidden 800px:block cursor-pointer dark:text-white text-black"
-                                onClick={() => setOpen(true)}
-                            />
+                            {user ? (
+                                <Link href={"/profile"}>
+                                    <Image
+                                        src={
+                                            //userData.user.avatar ? userData.user.avatar.url : avatar
+                                            user.avatar ? user.avatar : avatar
+                                        }
+                                        //width={30}
+                                        //height={30}
+                                        alt=""
+                                        className="w-[30px] h-[30px] object-cover rounded-full cursor-pointer"
+                                        // style={{
+                                        //     border: activeItem === 5 ? "2px solid #37a39a" : "none",
+                                        // }}
+                                    />
+                                </Link>
+                            ) : (
+                                <HiOutlineUserCircle
+                                    size={25}
+                                    className="hidden 800px:block cursor-pointer dark:text-white text-black"
+                                    onClick={() => setOpen(true)}
+                                />
+                            )}
                         </div>
 
                     </div>
