@@ -1,6 +1,6 @@
 "use client"
 import React, { FC, useEffect, useState } from "react";
-import { useFormik } from "formik";
+import {useFormik} from "formik";
 import * as Yup from "yup";
 import {
     AiOutlineEye,
@@ -129,7 +129,7 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
                     />
                 </div>
                 {/* GO TO SIGN UP */}
-                <h5 className="text-center pt-4 font-Poppins text-[14px] ">
+                <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
                     Not have any accout?
                     <span
                         className="text-[#2190ff] pl-1 cursor-pointer "

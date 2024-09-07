@@ -16,6 +16,7 @@
     "@reduxjs/toolkit": "^2.2.7",
     "autoprefixer": "^10.4.20",
     "formic": "^0.0.10",
+    "formik": "^2.4.6",
     "next": "14.2.7",
     "next-themes": "^0.3.0",
     "react": "^18",
