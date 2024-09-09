@@ -146,10 +146,10 @@ const SignUp: FC<Props> = ({ setRoute }) => {
                     className='flex items-center justify-center my-3'
                 >
                     <FcGoogle size={30} className='cursor-ponter mr-2' />
-                    <AiFillGithub size={30} className='cursor-ponter ml-2' />
+                    <AiFillGithub size={30} className='cursor-ponter ml-2 ' />
                 </div>
                 <h5
-                    className='text-center pt-4 font-Poppins text-[14px]'
+                    className='text-center pt-4 font-Poppins text-[14px] text-black dark:text-white'
                 >
                     Already have an account?
                     <span

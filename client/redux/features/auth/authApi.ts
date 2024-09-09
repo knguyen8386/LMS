@@ -84,7 +84,7 @@ export const authApi = apiSlice.injectEndpoints({
                     const result = await queryFulfilled;
                     dispatch(
                         userLoggedIn({
-                            accessToken: result.data.accessToken,
+                            accessToken: result.data.accessToken,   
                             user: result.data.user,
                         })
                     );
@@ -92,7 +92,7 @@ export const authApi = apiSlice.injectEndpoints({
                     console.log(error);
                 };
             }
-        }),
+        }), 
         // Log Out
         logout: builder.query({
             query: () => ({

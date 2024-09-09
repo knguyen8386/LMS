@@ -24,7 +24,7 @@ const SideBarProfile: FC<Props> = ({ user, active, avatar, setActive, logoutHand
                 onClick={() => setActive(1)}
             >
                 <Image
-                    src={user.avatar || avatar ? user.avatar || avatar : avatarDefault}
+                    src={user.avatar || avatar ? user.avatar.url || avatar : avatarDefault}
                     alt=''
                     className='w-[20px] h-[20px] object-cover 800px:w-[30px] 800px:h-[30px] cursor-pointer rounded-full'
                     width={20}
@@ -56,6 +56,7 @@ const SideBarProfile: FC<Props> = ({ user, active, avatar, setActive, logoutHand
                 Enrolled Courses
                 </h5>
             </div>
+            {/* Admin Dashboard */}
             {
                 user.role === "admin" &&
                 (
@@ -67,7 +68,9 @@ const SideBarProfile: FC<Props> = ({ user, active, avatar, setActive, logoutHand
                         <MdOutlineAdminPanelSettings size={20} className='dark:text-white text-black' />
                         <h5
                             className='pl-2 800px:block hidden font-Poppins dark:text-white text-black'
-                        >Admin Dashboard</h5>
+                        >
+                            Admin Dashboard
+                        </h5>
                     </Link>
                 )
             }

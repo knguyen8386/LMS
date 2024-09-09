@@ -87,7 +87,7 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
                         placeholder="password!@#$%"
                         className={`${errors.password && touched.password && "border-red-500"} ${styles.input}`}
                     />
-                    {!show ? (
+                    {/* {!show ? (
                         <AiOutlineEyeInvisible
                             className="absolute bottom-3 right-2 z-1 cursor-pointer"
                             size={20}
@@ -99,7 +99,7 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
                             size={20}
                             onClick={() => setShow(false)}
                         />
-                    )}
+                    )} */}
                 </div>
                 {errors.password && touched.password && (
                     <span className="text-red-500 pt-3 block">{errors.password}</span>
