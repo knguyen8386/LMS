@@ -15,6 +15,7 @@
     "@mui/material": "^6.0.2",
     "@reduxjs/toolkit": "^2.2.7",
     "autoprefixer": "^10.4.20",
+    "axios": "^1.7.7",
     "formic": "^0.0.10",
     "formik": "^2.4.6",
     "next": "14.2.7",

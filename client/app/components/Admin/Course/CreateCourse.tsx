@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import CourseInformation from "./CourseInformation";
 import CourseOptions from "./CourseOptions";
 import CourseData from "./CourseData";
-//import CourseContent from "./CourseContent";
-//import CoursePreview from "./CoursePreview";
+import CourseContent from "./CourseContent";
+import CoursePreview from "./CoursePreview";
 //import { useCreateCourseMutation } from "@/redux/features/courses/courseApi";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
@@ -86,7 +86,7 @@ const CreateCourse = (props: Props) => {
       })
     );
 
-    // prepare our data object
+    // Prepare our data object
     const data = {
       name: courseInfo.name,
       description: courseInfo.description,
@@ -135,7 +135,7 @@ const CreateCourse = (props: Props) => {
             setActive={setActive}
           />
         )}
-        {/* {active === 2 && (
+        {active === 2 && (
           <CourseContent
             active={active}
             setActive={setActive}
@@ -151,7 +151,7 @@ const CreateCourse = (props: Props) => {
             courseData={courseData}
             handleCourseCreate={handleCourseCreate}
           />
-        )} */}
+        )}
       </div>
       <div className="w-[20%] mt-[100px] h-screen fixed z-[-1] top-18 right-0">
         <CourseOptions active={active} setActive={setActive} />
