@@ -3,11 +3,10 @@ import React, { FC, useState } from "react";
 import toast from "react-hot-toast";
 import {
   AiOutlineDelete,
-  AiOutlineDoubleLeft,
-  AiOutlinePlayCircle,
   AiOutlinePlusCircle,
 } from "react-icons/ai";
-import { BiSolidBank, BiSolidPencil } from "react-icons/bi";
+import { BiSolidPencil } from "react-icons/bi";
+import { BsLink45Deg } from "react-icons/bs";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 type Props = {
@@ -363,7 +362,7 @@ const CourseContent: FC<Props> = ({
                         className="flex items-center text-[18px] dark:text-white text-black cursor-pointer"
                         onClick={() => handleAddLink(index)}
                       >
-                        <BiSolidBank className="mr-2" /> Add Link
+                        <BsLink45Deg className="mr-2" /> Add Link
                       </p>
                     </div>
                   </>

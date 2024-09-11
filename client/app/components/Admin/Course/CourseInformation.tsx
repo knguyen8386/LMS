@@ -101,6 +101,7 @@ const CourseInformation: FC<Props> = ({
           <textarea
             name=""
             id=""
+            required
             cols={30}
             rows={10}
             placeholder="Something amazing..."
@@ -252,7 +253,6 @@ const CourseInformation: FC<Props> = ({
             id="file"
             className="hidden"
             onChange={handleFileChange}
-            required
           />
           <label
             htmlFor="file"

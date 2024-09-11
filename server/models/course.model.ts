@@ -35,7 +35,7 @@ interface ICourseData extends Document {
 export interface ICourse extends Document {
   name: string;
   description: string;
-  //categories: string;
+  categories: string;
   price: number;
   estimatedPrice?: number;
   thumbnail: object;
@@ -60,7 +60,7 @@ const reviewSchema = new Schema<IReview>(
     comment: String,
     commentReplies: [Object],
   },
-  //{ timestamps: true }
+  { timestamps: true }
 );
 
 const linkSchema = new Schema<ILink>({
@@ -74,7 +74,7 @@ const commentSchema = new Schema<IComment>(
     question: String,
     questionReplies: [Object],
   },
-  //{ timestamps: true }
+  { timestamps: true }
 );
 
 const courseDataSchema = new Schema<ICourseData>({
@@ -100,10 +100,10 @@ const courseSchema = new Schema<ICourse>(
       type: String,
       required: true,
     },
-    // categories: {
-    //   type: String,
-    //   required: true,
-    // },
+    categories: {
+      type: String,
+      required: true,
+    },
     price: {
       type: Number,
       required: true,
