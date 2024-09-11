@@ -120,7 +120,7 @@ const AdminSidebar = () => {
               >
                 <Link href="/">
                   <h3 className="text-[25px] font-Poopins uppercase dark:text-white text-black">
-                    LMS
+                    KUZSERA
                   </h3>
                 </Link>
                 <IconButton

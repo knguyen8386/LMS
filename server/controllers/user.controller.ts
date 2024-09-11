@@ -233,7 +233,7 @@ export const updateAccessToken = CatchAsyncError(async (req: Request, res: Respo
 
     await redis.set(user._id, JSON.stringify(user), "EX", 604800);//expire after 7 days
 
-    next();
+    return next();
 
     // res.status(200).json({
     //   status: "success",
@@ -439,11 +439,11 @@ export const updateProfilePicture = CatchAsyncError(
 
 export const getAllUsers = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-      try {
-          getAllUsersService(res);
-      } catch (error: any) {
-          return next(new ErrorHandler(error.message, 400))
-      }
+    try {
+      getAllUsersService(res);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400))
+    }
   }
 );
 
@@ -453,22 +453,21 @@ export const getAllUsers = CatchAsyncError(
 
 export const updateUserRole = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-      try {
-          //const { email, role } = req.body
-          const { id, role } = req.body
-          // const isUserExits = await userModel.findOne({ email })
-          // if (isUserExits) {
-          //     const id = isUserExits._id
-              updateUserRoleService(res, id, role)
-          // } else {
-          //     res.status(400).json({
-          //         success: false,
-          //         message: "User not found"
-          //     })
-          // }
-      } catch (error: any) {
-          return next(new ErrorHandler(error.message, 400))
+    try {
+      const { email, role } = req.body;
+      const isUserExits = await userModel.findOne({ email })
+      if (isUserExits) {
+        const id = isUserExits._id;
+        updateUserRoleService(res, id, role);
+      } else {
+        res.status(400).json({
+          success: false,
+          message: "User not found"
+        })
       }
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
   }
 )
 
@@ -478,27 +477,27 @@ export const updateUserRole = CatchAsyncError(
 
 export const deleteUser = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-      try {
-          const { id } = req.params
+    try {
+      const { id } = req.params
 
-          const user = await userModel.findById(id)
+      const user = await userModel.findById(id)
 
-          if (!user) {
-              return next(new ErrorHandler("User not found", 404))
-          }
-
-          await user.deleteOne({ id })
-
-          await redis.del(id)
-
-          res.status(201).json({
-              success: true,
-              message: "User deleted successfully"
-              // message: `ini adalah ${id}`
-          })
-      } catch (error: any) {
-          return next(new ErrorHandler(error.message, 400))
+      if (!user) {
+        return next(new ErrorHandler("User not found", 404))
       }
+
+      await user.deleteOne({ id })
+
+      await redis.del(id)
+
+      res.status(201).json({
+        success: true,
+        message: "User deleted successfully"
+        // message: `ini adalah ${id}`
+      })
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400))
+    }
   }
 )
 

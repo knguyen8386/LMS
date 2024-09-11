@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 import React, { FC, useEffect, useState } from "react";
 import { AiOutlineDelete, AiOutlineMail } from "react-icons/ai";
 import { Box, Button, Modal } from "@mui/material";
@@ -26,10 +26,11 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
   const [role, setRole] = useState("admin");
   const [open, setOpen] = useState(false);
   const [userId, setUserId] = useState("");
-  const [deleteUser, { isSuccess: successDelete, error: errorDelete }] =
+
+  const [deleteUser, { isSuccess: deleteSuccess, error: deleteError }] =
     useDeleteUserMutation({});
 
-  const [updateUserRole, { error: updateError, isSuccess }] =
+  const [updateUserRole, {isSuccess: updateRoleSuccess, error: updateRoleError,  }] =
     useUpdateUserRoleMutation();
 
   const { isLoading, data, error, refetch } = useGetAllUsersQuery(
@@ -38,29 +39,29 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
   );
 
   useEffect(() => {
-    if (updateError) {
-      if ("data" in updateError) {
-        const errorMessage = updateError as any;
+    if (updateRoleError) {
+      if ("data" in updateRoleError) {
+        const errorMessage = updateRoleError as any;
         toast.error(errorMessage.data.message);
       }
     }
-    if (isSuccess) {
+    if (updateRoleSuccess) {
       refetch();
-      toast.success("User role updated successfully");
+      toast.success("User role updated successfully!");
       setActive(false);
     }
-    if (successDelete) {
+    if (deleteSuccess) {
       refetch();
-      toast.success("User role deleted successfully");
+      toast.success("Delete user successfully!");
       setOpen(false);
     }
-    if (errorDelete) {
-      if ("data" in errorDelete) {
-        const errorMessage = errorDelete as any;
+    if (deleteError) {
+      if ("data" in deleteError) {
+        const errorMessage = deleteError as any;
         toast.error(errorMessage.data.message);
       }
     }
-  }, [updateError, isSuccess, successDelete]);
+  }, [updateRoleError, updateRoleSuccess, deleteSuccess]);
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.3 },
@@ -115,31 +116,30 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
   if (isTeam) {
     const newData = data && data.users.filter((item: any) => item.role === "admin");
     newData && newData.forEach((item: any) => {
-        rows.push({
-          id: item._id,
-          name: item.name,
-          email: item.email,
-          role: item.role,
-          courses: item.courses.length,
-          created_at: format(item.createdAt),
-        });
+      rows.push({
+        id: item._id,
+        name: item.name,
+        email: item.email,
+        role: item.role,
+        courses: item.courses.length,
+        created_at: format(item.createdAt),
       });
+    });
   } else {
-    data &&data.users.forEach((item: any) => {
-        rows.push({
-          id: item._id,
-          name: item.name,
-          email: item.email,
-          role: item.role,
-          courses: item.courses.length,
-          created_at: format(item.createdAt),
-        });
+    data && data.users.forEach((item: any) => {
+      rows.push({
+        id: item._id,
+        name: item.name,
+        email: item.email,
+        role: item.role,
+        courses: item.courses.length,
+        created_at: format(item.createdAt),
       });
+    });
   }
 
   const handleSubmit = async () => {
     await updateUserRole({ email, role });
-    console.log("halo");
   };
 
   const handleDelete = async () => {
@@ -153,68 +153,71 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
         <Loader />
       ) : (
         <Box m="20px">
-          <div className="w-full flex justify-end">
-            <div
-              className={`${styles.button} !w-[200px] dark:bg-[#57c7a3] !h-[35px] dark:border dark:border-[#ffffff6c]`}
-              onClick={() => setActive(!active)}
-            >
-              Add New Member
+          {isTeam && (
+            <div className="w-full flex justify-end">
+              <div
+                className={`${styles.button} !w-[200px] dark:bg-[#57c7a3] !h-[35px] dark:border dark:border-[#ffffff6c]`}
+                onClick={() => setActive(!active)}
+              >
+                Add New Member
+              </div>
             </div>
-          </div>
+          )}
           <Box
             m="40px 0 0 0"
             height="80vh"
             sx={{
-                "& .MuiDataGrid-root": {
-                    border: "none",
-                    outline: "none",
-                },
-                "& .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon": {
-                    color: theme === "dark" ? "#fff" : "#000",
-                },
-                "& .MuiDataGrid-sortIcon": {
-                    color: theme === "dark" ? "#fff" : "#000",
-                },
-                "& .MuiDataGrid-row": {
-                    color: theme === "dark" ? "#fff" : "#000",
-                    borderBottom:
-                        theme === "dark"
-                            ? "1px solid #ffffff30!important"
-                            : "1px solid #ccc!important",
-                },
-                "& .MuiTablePagination-root": {
-                    color: theme === "dark" ? "#fff" : "#000",
-                },
-                "& .MuiDataGrid-cell": {
-                    borderBottom: "none",
-                },
-                "& .name-column-cell": {
-                    color: theme === "dark" ? "#fff" : "#000",
-                },
-                "& .MuiDataGrid-columnHeader": {
-                    backgroundColor: theme === "dark" ? "#3e4396" : "#a4a9fc",
-                    borderTop: "none",
-                    color: theme === "dark" ? "#fff" : "#000",
-                },
-                "& .MuiDataGrid-virtualScroller": {
-                    backgroundColor: theme === "dark" ? "#1F2A40" : "#F2F0F0",
-                },
-                "& .MuiDataGrid-footerContainer": {
-                    color: theme === "dark" ? "#fff" : "#000",
-                    borderTop: "none",
-                    backgroundColor: theme === "dark" ? "#3e4396" : "#a4a9fc",
-                },
-                "& .MuiCheckbox-root": {
-                    color:
-                        theme === "dark" ? `#b7ebde !important` : `#000 !important`,
-                },
-                "& .MuiDataGrid-toolbarContainer .MuiButton-next": {
-                    color: `#fff !important`,
-                },
+              "& .MuiDataGrid-root": {
+                border: "none",
+                outline: "none",
+              },
+              "& .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon": {
+                color: theme === "dark" ? "#fff" : "#000",
+              },
+              "& .MuiDataGrid-sortIcon": {
+                color: theme === "dark" ? "#fff" : "#000",
+              },
+              "& .MuiDataGrid-row": {
+                color: theme === "dark" ? "#fff" : "#000",
+                borderBottom:
+                  theme === "dark"
+                    ? "1px solid #ffffff30!important"
+                    : "1px solid #ccc!important",
+              },
+              "& .MuiTablePagination-root": {
+                color: theme === "dark" ? "#fff" : "#000",
+              },
+              "& .MuiDataGrid-cell": {
+                borderBottom: "none",
+              },
+              "& .name-column-cell": {
+                color: theme === "dark" ? "#fff" : "#000",
+              },
+              "& .MuiDataGrid-columnHeader": {
+                backgroundColor: theme === "dark" ? "#3e4396" : "#a4a9fc",
+                borderTop: "none",
+                color: theme === "dark" ? "#fff" : "#000",
+              },
+              "& .MuiDataGrid-virtualScroller": {
+                backgroundColor: theme === "dark" ? "#1F2A40" : "#F2F0F0",
+              },
+              "& .MuiDataGrid-footerContainer": {
+                color: theme === "dark" ? "#fff" : "#000",
+                borderTop: "none",
+                backgroundColor: theme === "dark" ? "#3e4396" : "#a4a9fc",
+              },
+              "& .MuiCheckbox-root": {
+                color:
+                  theme === "dark" ? `#b7ebde !important` : `#000 !important`,
+              },
+              "& .MuiDataGrid-toolbarContainer .MuiButton-next": {
+                color: `#fff !important`,
+              },
             }}
           >
             <DataGrid checkboxSelection rows={rows} columns={columns} />
           </Box>
+          {/* Update User role */}
           {active && (
             <Modal
               open={active}
@@ -223,7 +226,7 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
               aria-describedy="modal-modal-description"
             >
               <Box className="absolute top-[50%] left-[50%] -translatex-1/2 -translate-y-1/2 w-[450px] bg-white dark:bg-slate-900 rounded-[8px] shadow p-4 outline-none">
-                <h1 className={`${styles.title}`}>Add new member</h1>
+                <h1 className={`${styles.title}`}>Update User role</h1>
                 <div className="mt-4">
                   <input
                     type="email"
@@ -252,10 +255,11 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
               </Box>
             </Modal>
           )}
+          {/* Delete User */}
           {open && (
             <Modal
               open={open}
-              onClose={() => setActive(!active)}
+              onClose={() => setOpen(!open)}
               aria-labeleby="modal-modal-title"
               aria-describedy="modal-modal-description"
             >

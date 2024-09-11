@@ -24,13 +24,11 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
 //     useUpdateNotificationStatusMutation();
   const [notification, setNotification] = useState<any>([]);
   const [audio] = useState(
-    new Audio(
-      "https://res.cloudinary.com/dc9q2yi1s/video/upload/v1714814391/uf9ylzi2ca6prvaujmad.wav"
-    )
+    
   );
 
   const playerNotificationSound = () => {
-    audio.play();
+    //audio.play();
   };
 
 //   useEffect(() => {
