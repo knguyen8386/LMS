@@ -4,7 +4,6 @@ import { AiOutlineDelete, AiOutlineMail } from "react-icons/ai";
 import { Box, Button, Modal } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useTheme } from "next-themes";
-import { FiEdit2 } from "react-icons/fi";
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
 import {

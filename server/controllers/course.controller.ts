@@ -53,37 +53,37 @@ export const editCourse = CatchAsyncError(
 
             const courseData = (await CourseModel.findById(courseId)) as any;
 
-            // if (thumbnail && !thumbnail.startsWith("https")) {
+            if (thumbnail && !thumbnail.startsWith("https")) {
+                await cloudinary.v2.uploader.destroy(courseData.thumbnail.public_id);
+
+                const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
+                    folder: "courses",
+                });
+
+                data.thumbnail = {
+                    public_id: myCloud.public_id,
+                    url: myCloud.secure_url,
+                };
+            };
+            // if (thumbnail) {
             //     await cloudinary.v2.uploader.destroy(thumbnail.public_id);
 
             //     const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
             //         folder: "courses",
             //     });
-
             //     data.thumbnail = {
             //         public_id: myCloud.public_id,
             //         url: myCloud.secure_url,
             //     };
-            // }
-            if (thumbnail) {
-                await cloudinary.v2.uploader.destroy(thumbnail.public_id);
+            // };
 
-                const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
-                    folder: "courses",
-                });
+
+            if (thumbnail.startsWith("https")) {
                 data.thumbnail = {
-                    public_id: myCloud.public_id,
-                    url: myCloud.secure_url,
+                    public_id: courseData?.thumbnail.public_id,
+                    url: courseData?.thumbnail.url,
                 };
-            }
-
-
-            // if (thumbnail.startsWith("https")) {
-            //     data.thumbnail = {
-            //         public_id: courseData?.thumbnail.public_id,
-            //         url: courseData?.thumbnail.url,
-            //     };
-            // }
+            };
 
             const course = await CourseModel.findByIdAndUpdate(
                 courseId,
@@ -144,10 +144,9 @@ export const getSingleCourse = CatchAsyncError(
    Get all course --- without purchasing
 */
 
-export const getCourses = CatchAsyncError(
+export const getUserAllCourses = CatchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            
                 const courses = await CourseModel.find().select(
                     "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
                 );
@@ -475,10 +474,10 @@ export const addReplyToReview = CatchAsyncError(
 );
 
 /*
-  Get all courses--- only for admin
+  Get all courses --- only for admin
 */
 
-export const getAllCourses = CatchAsyncError(
+export const getAdminAllCourses = CatchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         getAllCoursesService(res);

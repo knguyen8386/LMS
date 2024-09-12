@@ -8,7 +8,7 @@ import { useTheme } from "next-themes";
 import { FiEdit2 } from "react-icons/fi";
 import {
     useDeleteCourseMutation,
-    useGetAllCoursesQuery,
+    useGetAdminAllCoursesQuery,
 } from "../../../../redux/features/courses/coursesApi";
 import { format } from "timeago.js";
 import { styles } from "@/app/styles/style";
@@ -22,11 +22,11 @@ const AllCourses: FC<Props> = (props) => {
     const { theme, setTheme } = useTheme();
     const [open, setOpen] = useState(false);
     const [courseId, setCourseId] = useState("");
-    const { isLoading, data, error, refetch } = useGetAllCoursesQuery(
+    const { isLoading, data, error, refetch } = useGetAdminAllCoursesQuery(
         {},
         { refetchOnMountOrArgChange: true }
     );
-    const [deleteCourse, { isSuccess, error: errorDelete }] =
+    const [deleteCourse, { isSuccess: deleteSuccess, error: errorDelete }] =
         useDeleteCourseMutation({});
 
     const columns = [
@@ -91,9 +91,9 @@ const AllCourses: FC<Props> = (props) => {
     }
 
     useEffect(() => {
-        if (isSuccess) {
+        if (deleteSuccess) {
             refetch();
-            toast.success("Course role deleted successfully");
+            toast.success("Course deleted successfully!");
             setOpen(false);
         }
         if (errorDelete) {
@@ -102,7 +102,7 @@ const AllCourses: FC<Props> = (props) => {
                 toast.error(errorMessage.data.message);
             }
         }
-    }, [isSuccess, errorDelete]);
+    }, [deleteSuccess, errorDelete]);
 
     const handleDelete = async () => {
         const id = courseId;

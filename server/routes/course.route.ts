@@ -1,5 +1,5 @@
 import express from 'express';
-import { addAnswer, addQuestion, addReplyToReview, addReview, deleteCourse, editCourse, generateVideoUrl, getAllCourses, getCourseByUser, getCourses, getSingleCourse, uploadCourse } from '../controllers/course.controller';
+import { addAnswer, addQuestion, addReplyToReview, addReview, deleteCourse, editCourse, generateVideoUrl, getAdminAllCourses, getCourseByUser, getSingleCourse, getUserAllCourses, uploadCourse } from '../controllers/course.controller';
 import { authorizeRoles, isAuthenticated } from '../middleware/auth';
 const courseRouter = express.Router();
 
@@ -8,8 +8,8 @@ courseRouter.post('/create-course',  isAuthenticated, authorizeRoles("admin"), u
 courseRouter.put('/edit-course/:id',   isAuthenticated, authorizeRoles("admin"), editCourse);
 
 courseRouter.get('/get-course/:id', getSingleCourse);
-
-courseRouter.get('/get-courses', getCourses);
+//user
+courseRouter.get('/get-user-all-courses', getUserAllCourses);
 
 courseRouter.get('/get-course-content/:id',  isAuthenticated, getCourseByUser);
 
@@ -20,8 +20,8 @@ courseRouter.put('/add-answer', isAuthenticated, addAnswer);
 courseRouter.put('/add-review/:id',  isAuthenticated, addReview);
 
 courseRouter.put('/add-reply',  isAuthenticated, authorizeRoles("admin"), addReplyToReview);
-
-courseRouter.get('/get-all-courses', isAuthenticated, authorizeRoles("admin"), getAllCourses);
+//admin
+courseRouter.get('/get-admin-all-courses', isAuthenticated, authorizeRoles("admin"), getAdminAllCourses);
 
 courseRouter.delete('/delete-course/:id',  isAuthenticated, authorizeRoles("admin"), deleteCourse);
 
