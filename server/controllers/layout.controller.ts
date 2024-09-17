@@ -17,7 +17,6 @@ export const createLayout = CatchAsyncError(
             if (isTypeExist) {
                 return next(new ErrorHandler(`${type} already exist`, 400));
             }
-
             if (type === "Banner") {
                 const { image, title, subTitle } = req.body;
                 const myCloud = await cloudinary.v2.uploader.upload(image, {
@@ -32,7 +31,7 @@ export const createLayout = CatchAsyncError(
                         },
                         title,
                         subTitle,
-                    }
+                    },
                 };
                 await LayoutModel.create(banner);
             }
