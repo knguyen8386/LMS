@@ -1,8 +1,9 @@
 "use client";
-import CourseAnalytics from "../../components/Admin/Analytics/CourseAnalytics";
-import AdminSidebar from "../../components/Admin/sidebar/AdminSidebar";
-import DashboardHero from "../../components/Admin/DashboardHero";
-import Heading from "../../utils/Heading";
+import React from "react";
+import OrdersAnalytics from "../../components/Admin/Analytics/OrdersAnalytics";
+import AdminSidebar from "@/app/components/Admin/sidebar/AdminSidebar";
+import DashboardHero from "@/app/components/Admin/DashboardHero";
+import Heading from "@/app/utils/Heading";
 
 type Props = {};
 
@@ -20,7 +21,7 @@ const page = (props: Props) => {
         </div>
         <div className="w-[85%]">
           <DashboardHero />
-          <CourseAnalytics />
+          <OrdersAnalytics />
         </div>
       </div>
     </div>

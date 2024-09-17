@@ -18,17 +18,17 @@ type Props = {};
 const CourseAnalytics = (props: Props) => {
   const { data, isLoading, isError } = useGetCoursesAnalyticsQuery({});
 
-    const analyticsData = [
-      { name: "Jun 2023", uv: 3 },
-      { name: "July 2023", uv: 2 },
-      { name: "August 2023", uv: 5 },
-      { name: "Sept 2023", uv: 7 },
-      { name: "October 2023", uv: 2 },
-      { name: "Nov 2023", uv: 5 },
-      { name: "December 2023", uv: 7 },
-    ];
+    // const analyticsData = [
+    //   { name: "Jun 2023", uv: 3 },
+    //   { name: "July 2023", uv: 2 },
+    //   { name: "August 2023", uv: 5 },
+    //   { name: "Sept 2023", uv: 7 },
+    //   { name: "October 2023", uv: 2 },
+    //   { name: "Nov 2023", uv: 5 },
+    //   { name: "December 2023", uv: 7 },
+    // ];
 
-//   const analyticsData: any = [];
+  const analyticsData: any = [];
 
   data &&
     data.courses.last12Months.forEach((item: any) => {
@@ -58,7 +58,7 @@ const CourseAnalytics = (props: Props) => {
                 <XAxis dataKey="name">
                   <Label offset={0} position="insideBottom" />
                 </XAxis>
-                <YAxis domain={[minValue, "auto"]} />
+                <YAxis domain={[minValue, 'auto']} allowDecimals={false} tickFormatter={(tick) => Math.round(tick).toString()} />
                 <Bar dataKey="uv" fill="#3faf82">
                   <LabelList dataKey="uv" position="top" />
                 </Bar>
