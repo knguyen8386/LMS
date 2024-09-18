@@ -28,15 +28,6 @@ const Courses = (props: Props) => {
             courses.map((item: any, index: number) => (
               <>
                 <CourseCard item={item} key={index} />
-                <CourseCard item={item} key={index} />
-                <CourseCard item={item} key={index} />
-                <CourseCard item={item} key={index} />
-                <CourseCard item={item} key={index} />
-                <CourseCard item={item} key={index} />
-                <CourseCard item={item} key={index} />
-                <CourseCard item={item} key={index} />
-                <CourseCard item={item} key={index} />
-                
               </>
             ))}
         </div>

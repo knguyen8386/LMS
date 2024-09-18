@@ -110,34 +110,34 @@ export const editCourse = CatchAsyncError(
 
 export const getSingleCourse = CatchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const courseId = req.params.id;
-
-            const isCacheExist = await redis.get(courseId);
-
-            if (isCacheExist) {
-                const course = JSON.parse(isCacheExist);
-                res.status(200).json({
-                    success: true,
-                    course,
-                });
-            } else {
-                const course = await CourseModel.findById(req.params.id).select(
-                    "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
-                );
-
-                await redis.set(courseId, JSON.stringify(course), 'EX', 604800);//expire after 7 days
-
-                res.status(200).json({
-                    success: true,
-                    course,
-                });
-            }
-        } catch (error: any) {
-            return next(new ErrorHandler(error.message, 500));
+      try {
+        const courseId = req.params.id;
+  
+        const isChacheExist = await redis.get(courseId);
+  
+        if (isChacheExist) {
+          const course = JSON.parse(isChacheExist);
+          res.status(200).json({
+            success: true,
+            course,
+          });
+        } else {
+          const course = await CourseModel.findById(req.params.id).select(
+            "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+          );
+  
+          await redis.set(courseId, JSON.stringify(course), "EX", 604800); // 7 days
+  
+          res.status(200).json({
+            success: true,
+            course,
+          });
         }
+      } catch (error: any) {
+        return next(new ErrorHandler(error.message, 500));
+      }
     }
-);
+  );
 
 
 /*
