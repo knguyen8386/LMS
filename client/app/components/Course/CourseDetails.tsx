@@ -11,8 +11,8 @@ import {
 } from "react-icons/io";
 import { useSelector } from "react-redux";
 import CourseContentList from "./CourseContentList";
-// import { Elements } from "@stripe/react-stripe-js";
-// import CheckOutForm from "../Payment/CheckOutForm";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckOutForm from "../Payment/CheckOutForm";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import Image from "next/image";
 import defaultImage from "../../../public/assets/avatar.png";
@@ -28,8 +28,8 @@ type Props = {
 
 const CourseDetails = ({
   data,
-  clientSecret,
   stripePromise,
+  clientSecret,
   setRoute,
   setOpen: openAuthModal,
 }: Props) => {
@@ -53,7 +53,7 @@ const CourseDetails = ({
 
   const handleOrder = (e: any) => {
     // if (user) {
-    //   setOpen(true);
+      setOpen(true);
     // } else {
     //   setRoute("Login");
     //   openAuthModal(true);
@@ -108,6 +108,7 @@ const CourseDetails = ({
             <h1 className="text-[25px] font-Poppins font-[600] text-black dark:text-white">
               What are the prerequisites for starting this course?
             </h1>
+            <div>
               {data.prerequisites?.map((item: any, index: number) => (
                 <div
                   className="w-full flex 800px:items-center py-2"
@@ -126,6 +127,7 @@ const CourseDetails = ({
               ))}
               <br />
               <br />
+            </div>
             <div>
               <h1 className="text-[25px] font-Poppins font-[600] text-black dark:text-white">
                 Course Overview
@@ -291,11 +293,11 @@ const CourseDetails = ({
                 />
               </div>
               <div className="w-full">
-                {/* {stripePromise && clientSecret && (
+                {stripePromise && clientSecret && (
                   <Elements stripe={stripePromise} options={{ clientSecret }}>
                     <CheckOutForm setOpen={setOpen} data={data} user={user} />
                   </Elements>
-                )} */}
+                )}
               </div>
             </div>
           </div>
