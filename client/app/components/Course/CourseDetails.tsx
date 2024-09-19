@@ -34,10 +34,9 @@ const CourseDetails = ({
   setOpen: openAuthModal,
 }: Props) => {
   const [open, setOpen] = useState(false);
-  const { user } = useSelector((state: any) => state.auth);
   const { data: userData } = useLoadUserQuery(undefined, {});
+  const user = userData?.user;
   // const [user, setUser] = useState<any>();
-
   // useEffect(() => {
   //   setUser(userData?.user);
   //   console.log("set user");
