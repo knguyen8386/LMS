@@ -2,7 +2,7 @@
 import { styles } from "@/app/styles/style";
 import CoursePlayer from "@/app/utils/CoursePlayer";
 import {
-  useAddAnwerInQuestionMutation,
+  useAddAnswerInQuestionMutation,
   useAddNewQuestionMutation,
   useAddReplyInReviewMutation,
   useAddReviewInCourseMutation,
@@ -49,15 +49,18 @@ const CourseContentMedia = ({
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(3);
   const [answer, setAnswer] = useState("");
-  const [answerId, setAnswerId] = useState("");
+  // const [answerId, setAnswerId] = useState("");
   const [questionId, setQuestionId] = useState("");
   const [isReviewReply, setIsReviewReply] = useState(false);
   const [reply, setReply] = useState("");
   const [reviewId, setReviewId] = useState("");
   const [replyActive, setReplyActive] = useState(false);
   const [
-    addnewQuestion,
-    { isSuccess, error, isLoading: questionCreationLoading },
+    addNewQuestion,
+    { 
+      isSuccess: questionCreationSuccess, 
+      error, 
+      isLoading: questionCreationLoading },
   ] = useAddNewQuestionMutation();
   const [
     addAnswerInQuestion,
@@ -66,7 +69,7 @@ const CourseContentMedia = ({
       error: answerError,
       isLoading: answerCreationLoading,
     },
-  ] = useAddAnwerInQuestionMutation();
+  ] = useAddAnswerInQuestionMutation();
   const [
     addReviewInCourse,
     {
@@ -96,10 +99,10 @@ const CourseContentMedia = ({
 
   const handleQuestion = () => {
     if (question.length === 0) {
-      toast.error("Question cant't be empty");
+      toast.error("Question cant't be empty!");
     } else {
       console.log({ question, courseId: id, contentId: data[activeVideo]._id });
-      addnewQuestion({
+      addNewQuestion({
         question,
         courseId: id,
         contentId: data[activeVideo]._id,
@@ -108,10 +111,10 @@ const CourseContentMedia = ({
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (questionCreationSuccess) {
       setQuestion("");
       refetch();
-      toast.success("Question added successfully");
+      toast.success("Question added successfully!");
     //   socketId.emit("notification", {
     //     title: "New Question Received",
     //     message: `You have a new question from ${data[activeVideo].title}`,
@@ -121,7 +124,7 @@ const CourseContentMedia = ({
     if (answerSuccess) {
       setAnswer("");
       refetch();
-      toast.success("Answer added successfully");
+      toast.success("Answer added successfully!");
     //   if (user.role !== "admin") {
     //     socketId.emit("notification", {
     //       title: "New Question Reply Received",
@@ -171,7 +174,7 @@ const CourseContentMedia = ({
       }
     }
   }, [
-    isSuccess,
+    questionCreationSuccess,
     error,
     answerSuccess,
     answerError,
@@ -337,7 +340,7 @@ const CourseContentMedia = ({
               setAnswer={setAnswer}
               handleAnswerSubmit={handleAnswerSubmit}
               user={user}
-              setAnswerId={setAnswerId}
+              // setAnswerId={setAnswerId}
               questionId={questionId}
               setQuestionId={setQuestionId}
               answerCreationLoading={answerCreationLoading}
@@ -515,7 +518,7 @@ const CommentReply = ({
   setAnswer,
   handleAnswerSubmit,
   user,
-  setAnswerId,
+  // setAnswerId,
   questionId,
   answerCreationLoading,
   setQuestionId,
@@ -546,8 +549,6 @@ const CommentReply = ({
 };
 
 const CommentItem = ({
-  data,
-  activeVideo,
   item,
   answer,
   setAnswer,
@@ -561,6 +562,14 @@ const CommentItem = ({
   return (
     <div className="my-4">
       <div className="flex mb-2">
+        {/* User name with 2 letter */}
+        {/* <div className="w-[50px] h-[50px]">
+          <div className="w-[50px] h-[50px] bg-slate-600 rounded-[50px] flex items-center justify-center cursor-pointer">
+              <h1 className="uppercase text-[18px]">
+                {item?.user.name.slice(0, 2)}
+              </h1>
+          </div>
+        </div> */}
         <Image
           src={item.user.avatar ? item.user.avatar.url : defaultImage}
           width={50}
@@ -569,10 +578,10 @@ const CommentItem = ({
           className="w-[50px] h-[50px] rounded-full object-cover"
         />
         <div className="pl-3 dark:text-white text-black">
-          <h5 className="text-[20px]">{item.user.name}</h5>
-          <p>{item.question}</p>
+          <h5 className="text-[20px]">{item?.user.name}</h5>
+          <p>{item?.question}</p>
           <small className="text-[#000000b8] dark:text-[#ffffff83]">
-            {!item.createdAt ? "" : format(item.createdAt)}
+            {!item.createdAt ? "" : format(item?.createdAt)}
           </small>
         </div>
       </div>
@@ -592,6 +601,7 @@ const CommentItem = ({
         <BiMessage
           size={20}
           className="dark:text-[#ffffff83] cursor-pointer text-[#000000b8]"
+          fill="#ffffff83"
         />
         <span className="pl-1 mt-[-4px] cursor-pointer text-[#000000b8] dark:text-[#ffffff83]">
           {item.questionReplies.length}
@@ -630,14 +640,14 @@ const CommentItem = ({
           <>
             <div className="w-full flex relative dark:text-white text-black">
               <input
+                type="text"
                 placeholder="Enter your answer..."
                 value={answer}
                 onChange={(e: any) => setAnswer(e.target.value)}
-                className={`block 800px:ml-12 outline-none bg-transparent border-b border-[#00000027] dark:text-white text-black dark:border-[#fff] p-[5px] w-[95%] ${
+                className={`block 800px:ml-12 mt-2 outline-none bg-transparent border-b border-[#00000027] dark:text-white text-black dark:border-[#fff] p-[5px] w-[95%] ${
                   answer === "" ||
                   (answerCreationLoading && "cursor-not-allowed")
                 }`}
-                type="text"
               />
               <button
                 type="submit"
