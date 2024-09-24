@@ -35,12 +35,12 @@ const CourseDetails = ({
 }: Props) => {
   const [open, setOpen] = useState(false);
   const { data: userData } = useLoadUserQuery(undefined, {});
-  const user = userData?.user;
-  // const [user, setUser] = useState<any>();
-  // useEffect(() => {
-  //   setUser(userData?.user);
-  //   console.log("set user");
-  // }, [userData]);
+  // const user = userData?.user;
+  const [user, setUser] = useState<any>();
+  useEffect(() => {
+    setUser(userData?.user);
+    console.log("set user");
+  }, [userData]);
 
   const discountprecentange =
     ((data?.estimatedPrice - data?.price) / data?.estimatedPrice) * 100;
@@ -51,12 +51,12 @@ const CourseDetails = ({
     user && user?.courses?.find((item: any) => item._id === data._id);
 
   const handleOrder = (e: any) => {
-    // if (user) {
+    if (user) {
       setOpen(true);
-    // } else {
-    //   setRoute("Login");
-    //   openAuthModal(true);
-    // }
+    } else {
+      setRoute("Login");
+      openAuthModal(true);
+    }
   };
 
   return (
