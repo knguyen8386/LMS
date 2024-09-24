@@ -23,9 +23,9 @@ import { format } from "timeago.js";
 import defaultImage from "../../../public/assets/avatar.png";
 import { VscVerifiedFilled } from "react-icons/vsc";
 import Ratings from "@/app/utils/Ratings";
-// import socketIO from "socket.io-client";
+import socketIO from "socket.io-client";
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
-// const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 type Props = {
   data: any;
@@ -144,34 +144,34 @@ const CourseContentMedia = ({
       setQuestion("");
       refetch();
       toast.success("Question added successfully!");
-    //   socketId.emit("notification", {
-    //     title: "New Question Received",
-    //     message: `You have a new question from ${data[activeVideo].title}`,
-    //     userId: user._id,
-    //   });
+      socketId.emit("notification", {
+        title: "New Question Received",
+        message: `You have a new question in ${data[activeVideo].title}`,
+        userId: user._id,
+      });
     }
     if (answerSuccess) {
       setAnswer("");
       refetch();
       toast.success("Answer added successfully!");
-    //   if (user.role !== "admin") {
-    //     socketId.emit("notification", {
-    //       title: "New Question Reply Received",
-    //       message: `You have a new question reply in ${data[activeVideo].title}`,
-    //       userId: user._id,
-    //     });
-    //   }
+      if (user.role !== "admin") {
+        socketId.emit("notification", {
+          title: "New Question Reply Received",
+          message: `You have a new question reply in ${data[activeVideo].title}`,
+          userId: user._id,
+        });
+      }
     }
     if (reviewSuccess) {
       setReview("");
       setRating(1);
       courseRefetch();
       toast.success("Review added successfully!");
-    //   socketId.emit("notification", {
-    //     title: "New Review Received",
-    //     message: `You have a new review from ${data[activeVideo].title}`,
-    //     userId: user._id,
-    //   });
+      socketId.emit("notification", {
+        title: "New Review Received",
+        message: `You have a new review in ${data[activeVideo].title}`,
+        userId: user._id,
+      });
     }
     if (replySuccess) {
       setReply("");

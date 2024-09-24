@@ -1,15 +1,15 @@
 "use client";
 import { ThemeSwitcher } from "../../../app/utils/ThemeSwitcher";
-// import {
-//   useGetAllNotificationQuery,
-//   useUpdateNotificationStatusMutation,
-// } from "@/redux/features/notifications/notifiationsApi";
+import {
+  useGetAllNotificationQuery,
+  useUpdateNotificationStatusMutation,
+} from "../../../redux/features/notifications/notificationApi";
 import React, { FC, useEffect, useState } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
-//import socketIO from "socket.io-client";
-//import { format } from "timeago.js";
+import { format } from "timeago.js";
+import socketIO from "socket.io-client";
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
-//const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 type Props = {
   open?: boolean;
@@ -17,42 +17,44 @@ type Props = {
 };
 
 const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
-//   const { data, refetch } = useGetAllNotificationQuery(undefined, {
-//     refetchOnMountOrArgChange: true,
-//   });
-//   const [updateNotificationStatus, { isSuccess }] =
-//     useUpdateNotificationStatusMutation();
+  const { data, refetch } = useGetAllNotificationQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+  const [updateNotificationStatus, { isSuccess }] =
+    useUpdateNotificationStatusMutation();
   const [notification, setNotification] = useState<any>([]);
   const [audio] = useState(
-    
+    new Audio(
+      "https://res.cloudinary.com/dkkkca0vh/video/upload/v1727218789/notification.mp3"
+    )
   );
 
   const playerNotificationSound = () => {
-    //audio.play();
+    audio.play();
   };
 
-//   useEffect(() => {
-//     if (data) {
-//       setNotification(
-//         data.notifications.filter((item: any) => item.status === "unread")
-//       );
-//     }
-//     if (isSuccess) {
-//       refetch();
-//     }
-//     audio.load();
-//   }, [data, isSuccess]);
+  useEffect(() => {
+    if (data) {
+      setNotification(
+        data.notifications.filter((item: any) => item.status === "unread")
+      );
+    }
+    if (isSuccess) {
+      refetch();
+    }
+    audio.load();
+  }, [data, isSuccess]);
 
-//   useEffect(() => {
-//     socketId.on("newNotification", (data) => {
-//       refetch();
-//       playerNotificationSound();
-//     });
-//   }, []);
+  useEffect(() => {
+    socketId.on("newNotification", (data) => {
+      refetch();
+      playerNotificationSound();
+    });
+  }, []);
 
-//   const handleNotificationStatusChange = async (id: string) => {
-//     await updateNotificationStatus(id);
-//   };
+  const handleNotificationStatusChange = async (id: string) => {
+    await updateNotificationStatus(id);
+  };
 
   return (
     <div className="w-full flex items-center justify-end p-6 fixed top-5 right-0">
@@ -82,7 +84,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
                   <p className="text-black dark:text-white">{item.title}</p>
                   <p
                     className="text-black dark:text-white cursor-pointer"
-                    // onClick={() => handleNotificationStatusChange(item._id)}
+                    onClick={() => handleNotificationStatusChange(item._id)}
                   >
                     Mark as read
                   </p>
@@ -91,7 +93,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
                   {item.message}
                 </p>
                 <p className="p-2 text-black dark:text-white text-[14px]">
-                  {/* {format(item.createdAt)} */}
+                  {format(item.createdAt)}
                 </p>
               </div>
             ))}
