@@ -78,33 +78,7 @@ const AllInvoices = ({ isDashboard }: Props) => {
         ]),
   ];
 
-  const rows: any = [
-    // mock data for testing
-    {
-        id:"12345678988788",
-        userName:"Shakira Ramos",
-        userEmail:"Shaminaminaaawakawakaehe@gmail.com",
-        title:"React JS Course",
-        price:"$500",
-        created_at:"3 day ago",
-    },
-    {
-        id:"212159847877884",
-        userName:"Patrick Steward",
-        userEmail:"PatrickSteward123@gmail.com",
-        title:"React JS Course",
-        price:"$300",
-        created_at:"2 day ago",
-    },
-    {
-        id:"112131265448787",
-        userName:"Lamma Yarn",
-        userEmail:"LammaYarn222@gmail.com",
-        title:"Pick Girl Course",
-        price:"$200",
-        created_at:"32 day ago",
-    }
-  ];
+  const rows: any = [];
 
   orderData && orderData.forEach((item: any) => {
       rows.push({

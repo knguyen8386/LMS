@@ -61,8 +61,8 @@ const SideBarProfile: FC<Props> = ({ user, active, avatar, setActive, logoutHand
                 user.role === "admin" &&
                 (
                     <Link
-                        className={`w-full flex items-center px-3 py-4 cursor-pointer ${active === 6 ? "dark:bg-slate-800 bg-white" : "bg-transparent"
-                            }`}
+                        className={`w-full flex items-center px-3 py-4 cursor-pointer ${active === 4 ? "dark:bg-slate-800 bg-white" : "bg-transparent"
+                            } hover:bg-gray-100 dark:hover:bg-gray-700`}
                         href={"/admin"}
                     >
                         <MdOutlineAdminPanelSettings size={20} className='dark:text-white text-black' />
@@ -76,7 +76,7 @@ const SideBarProfile: FC<Props> = ({ user, active, avatar, setActive, logoutHand
             }
             {/* Logout */}
             <div
-                className={`w-full flex items-center px-3 py-4 cursor-pointer ${active === 4 ? "dark:bg-slate-800 bg-white" : "bg-transparent"
+                className={`w-full flex items-center px-3 py-4 cursor-pointer ${active === 5 ? "dark:bg-slate-800 bg-white" : "bg-transparent"
                     }hover:bg-gray-100 dark:hover:bg-gray-700`}
                 onClick={() => logoutHandler()}
             >

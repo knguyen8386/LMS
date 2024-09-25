@@ -47,35 +47,34 @@ const DashboardWidgets: FC<Props> = ({ open }) => {
   const [orderComparePrecentenge, setOrderComparePercentenge] = useState<any>();
   const [userComparePrecentenge, setUserComparePercentenge] = useState<any>();
 
-  const { data, isLoading } = useGetUserAnalyticsQuery({});
-  const { data: ordersData, isLoading: ordersLoading } =
-    useGetOrdersAnalyticsQuery({});
+  const { data: usersData, isLoading: usersLoading } = useGetUserAnalyticsQuery({});
+  const { data: ordersData, isLoading: ordersLoading } = useGetOrdersAnalyticsQuery({});
 
   useEffect(() => {
-    if (isLoading && ordersLoading) {
+    if (usersLoading && ordersLoading) {
       return;
     } else {
-      if (data && ordersData) {
-        const usersLastTwoMonths = data.users.last12Months.slice(-2);
+      if (usersData && ordersData) {
+        // get data of user and order last 2 month
+        const usersLastTwoMonths = usersData.users.last12Months.slice(-2);
         const ordersLastTwoMonths = ordersData.orders.last12Months.slice(-2);
 
         if (
           usersLastTwoMonths.length === 2 &&
           ordersLastTwoMonths.length === 2
         ) {
+          // get data of user and order of current month and last month
           const usersCurrentMonth = usersLastTwoMonths[1].count;
           const usersPreviousMonth = usersLastTwoMonths[0].count;
           const ordersCurrentMonth = ordersLastTwoMonths[1].count;
           const ordersPreviousMonth = ordersLastTwoMonths[0].count;
 
-          const usersPercentChange =
+          const usersPercentChange = usersPreviousMonth !==0?
             ((usersCurrentMonth - usersPreviousMonth) /
-              (usersPreviousMonth === 0 ? 1 : usersPreviousMonth)) *
-            100;
-          const ordersPercentChange =
+              (usersPreviousMonth === 0 ? 1 : usersPreviousMonth)) * 100: 100;
+          const ordersPercentChange = ordersPreviousMonth !==0?
             ((ordersCurrentMonth - ordersPreviousMonth) /
-              (ordersPreviousMonth === 0 ? 1 : ordersPreviousMonth)) *
-            100;
+              (ordersPreviousMonth === 0 ? 1 : ordersPreviousMonth)) * 100 : 100;
 
           setUserComparePercentenge({
             currentMonth: usersCurrentMonth,
@@ -90,7 +89,7 @@ const DashboardWidgets: FC<Props> = ({ open }) => {
         }
       }
     }
-  }, [isLoading, ordersLoading, data, ordersData]);
+  }, [usersLoading, ordersLoading, usersData, ordersData]);
 
   return (
     <div className="mt-[50px] min-h-screen">
