@@ -1,2 +1,2 @@
-# LMS-MERN
-All Functional MERN Stack LMS
+# LMS-AI
+
