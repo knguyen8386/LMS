@@ -1,2 +1,2 @@
-# LMS-AI
+# LMS
 
